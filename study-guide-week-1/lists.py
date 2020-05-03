@@ -36,14 +36,8 @@ def long_words(words):
         >>> long_words(["all", "are", "tiny"])
         []
     """
-    long_words_list = []
 
-    for word in words:
-        if len(word) > 4:
-            long_words_list.append(word)
-
-    return long_words_list
-
+    return [word for word in words if len(word) > 4]
 
 def n_long_words(words, n):
     """Return words in list longer than `n` characters.
@@ -58,12 +52,12 @@ def n_long_words(words, n):
         >>> n_long_words(["I", "like", "apples", "bananas", "you"], 5)
         ['apples', 'bananas']
     """
-    long_words_list=[]
-    for word in words:
-        if len(word) > n:
-            long_words_list.append(word)
+    # long_words_list=[]
+    # for word in words:
+    #     if len(word) > n:
+    #         long_words_list.append(word)
 
-    return long_words_list
+    return [word for word in words if len(word) > n]
 
 
 def smallest_int(numbers):
@@ -125,8 +119,8 @@ def halvesies(numbers):
         >>> halvesies([1, 5])
         [0.5, 2.5]
     """
-    halves_list = [float(number/2) for number in numbers]
-    return halves_list
+
+    return [float(number/2) for number in numbers]
 
 
 def word_lengths(words):
@@ -137,8 +131,8 @@ def word_lengths(words):
         >>> word_lengths(["hello", "hey", "hello", "spam"])
         [5, 3, 5, 4]
     """
-    word_lengths = [len(word) for word in words]
-    return word_lengths
+    
+    return [len(word) for word in words]
 
 
 def sum_numbers(numbers):
@@ -307,15 +301,14 @@ def reverse_list_in_place(items):
         >>> orig
         ['I', 'love', 'cookies']
     """
+    front = 0
+    back = len(items)-1
 
-    counter = 0
-    for i in range(len(items)-1):
-        item_to_move = items[-1:]
-        del items[-1]
-        items[counter:counter] = item_to_move
-        counter+=1
+    while front < back:
+        items[0], items[back] = items[back], items[0]
+        front+=1
+        back-=1
 
-    return items
 
 
 def duplicates(items):
@@ -340,22 +333,17 @@ def duplicates(items):
         >>> orig
         ['apple', 'apple', 'berry']
     """
-    #get a count for every item, items with count>1 are dups, add the dupes to a list, sort list
-    duplicate_items = []
-    item_count_dictionary = dict({item:0 for item in items})
+    
+    duplicates_set = set()
+    item_set = set()
 
     for item in items:
-        if item_count_dictionary[item] == 0:
-            item_count_dictionary[item] = 1
-        else:
-            item_count_dictionary[item] +=1
-    
-    for item_key, item_value in item_count_dictionary.items():
-        if item_value > 1:
-            duplicate_items.append(item_key)
+        if item in item_set:
+            duplicates_set.add(item)
 
+        item_set.add(item)
     
-    return sorted(duplicate_items)
+    return sorted(list(duplicates_set))
 
 
 def find_letter_indices(words, letter):
@@ -382,10 +370,16 @@ def find_letter_indices(words, letter):
     ("o" does not appear in "jumps", so the result for that input is
     `None`.)
     """
+    #if word !contain 'o' add 'None to index_list', else enumerate and find tuples with 'o'
+    index_list = []
+    for word in words:
+        if 'o' not in word:
+            index_list.append(None)
+        else:
+            enumerated_word_list = list(enumerate(word))
+            [index_list.append(letter_tuple[0]) for letter_tuple in enumerated_word_list if letter_tuple[1] == 'o' ]
 
-    return []
-
-
+    return index_list
 #####################################################################
 # END OF PRACTICE: You can ignore everything below.
 
